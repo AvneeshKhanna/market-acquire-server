@@ -1,0 +1,6 @@
+{
+    "dynamoDB" : {
+        "formTable" : "FormData"
+    },
+	"type" : "DEVELOPMENT"
+}

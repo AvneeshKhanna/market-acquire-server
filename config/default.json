@@ -1,0 +1,7 @@
+{
+     "dynamoDB" : {
+        "formTable" : "FormData_Test"
+    },
+	"type" : "PRODUCTION"
+	
+}
