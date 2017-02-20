@@ -25,6 +25,7 @@
     "mysql": "^2.13.0",
     "net": "^1.0.2",
     "node-gcm": "^0.14.4",
+    "node-schedule": "^1.2.0",
     "node-schema-object": "^3.3.4",
     "promise": "^7.1.1",
     "request": "^2.79.0",
