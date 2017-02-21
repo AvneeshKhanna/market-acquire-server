@@ -21,10 +21,11 @@ router.post('/',function(request,response,error){
     var dataFromAjax = JSON.parse(request.body.dataToSend);
     var targetAudience = dataFromAjax.targetAudience;
     var notificationMessage = dataFromAjax.notificationData;
+    var notificationCategory = dataFromAjax.notificationCategory;
     
     if(targetAudience == 'activitySpecific'){
         var activitySet = dataFromAjax.notificationSet;
-        getActivityFcmTokens(activitySet,notificationMessage,function(status){
+        getActivityFcmTokens(activitySet,notificationMessage,notificationCategory,function(status){
             if(status){
                 response.send(status);
                 response.end();
@@ -39,7 +40,19 @@ router.post('/',function(request,response,error){
     if(targetAudience == 'userSpecific'){
         var usersSet = dataFromAjax.notificationSet;
         var activityId = dataFromAjax.activityID;
-        getUserSpecificTokens(usersSet,activityId,notificationMessage,function(status){
+        getUserSpecificTokens(usersSet,activityId,notificationMessage,notificationCategory,function(status){
+            if(status){
+                response.send(status);
+                response.end();
+            }
+            else{
+                response.send(false);
+                response.end();
+            }
+        });
+    }
+    if(targetAudience == 'select'){
+        getAllFcmToken(notificationCategory,notificationMessage,function(status){
             if(status){
                 response.send(status);
                 response.end();
@@ -52,9 +65,9 @@ router.post('/',function(request,response,error){
     }
 });
 
-function getActivityFcmTokens(activitySet,message,callback){
+function getActivityFcmTokens(activitySet,message,category,callback){
     var activitynotificationData = {
-        Category : "ActivityNotification",
+        Category : category,
         Message : message
     };
     
@@ -89,9 +102,9 @@ function getActivityFcmTokens(activitySet,message,callback){
     });
 }
 
-function getUserSpecificTokens(usersSet,activityid,message,callback){
+function getUserSpecificTokens(usersSet,activityid,message,category,callback){
      var usernotificationData = {
-        Category : "ActivityNotification",
+        Category : category,
         Message : message
     };
     
@@ -104,7 +117,7 @@ function getUserSpecificTokens(usersSet,activityid,message,callback){
                 AttributeValueList: [activityid],
                 ComparisonOperator: 'CONTAINS'
             },
-            PromoterName: {
+            Email: {
                 AttributeValueList: usersSet,
                 ComparisonOperator: 'IN'
             }
@@ -132,6 +145,39 @@ function getUserSpecificTokens(usersSet,activityid,message,callback){
     });
 }
 
+function getAllFcmToken(category,message,callback){
+    var allUsernotificationData = {
+        Category : category,
+        Message : message
+    };
+    
+    var getAllParams = {
+        TableName:'UserDetails',
+        AttributesToGet:['Fcm_Token'],
+        ConsistentRead:true
+    };
+    
+    docClient.scan(getAllParams,function(error,data){
+        if(error){
+            console.log(error);
+            callback(null);
+        }
+        else{
+            console.log(data);
+            var fcmTokens = fcmTokenMapping(data.Items);
+            console.log(fcmTokens);
+            sendNotification(fcmTokens,allUsernotificationData,function(sendStatus){
+                if(sendStatus){
+                    callback(true);
+                }
+                else{
+                    callback(null);
+                }
+            });
+        }
+    });
+}
+
 function fcmTokenMapping(serverTokens){
     var serverFcmTokens = [];
     for(var j=0;j<serverTokens.length;j++){
@@ -143,6 +189,7 @@ function fcmTokenMapping(serverTokens){
 }
 
 function sendNotification(registrationTokens , notificationData , callback){
+    console.log(notificationData);
     if(registrationTokens.length == 0){
         callback(null);
     }
