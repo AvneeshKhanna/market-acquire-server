@@ -20,9 +20,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 router.post('/',function(request,response,error){
-    var savedata = request.body.saveData;
-    var data = JSON.parse(savedata);
-    var createformData = data.createformData;
+    var createformData = request.body.createformData;
+    console.log('The data from web----');
+    console.log(createformData);
     var bool = true;
     var activityId = createformData[0];
     var fields = createformData[1];

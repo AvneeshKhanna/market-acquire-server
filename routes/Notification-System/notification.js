@@ -22,6 +22,7 @@ router.post('/',function(request,response,error){
     var targetAudience = dataFromAjax.targetAudience;
     var notificationMessage = dataFromAjax.notificationData;
     var notificationCategory = dataFromAjax.notificationCategory;
+    console.log(notificationCategory);
     
     if(targetAudience == 'activitySpecific'){
         var activitySet = dataFromAjax.notificationSet;
@@ -92,7 +93,7 @@ function getActivityFcmTokens(activitySet,message,category,callback){
             var fcmTokens = fcmTokenMapping(data.Items);
             sendNotification(fcmTokens,activitynotificationData,function(sendStatus){
                 if(sendStatus){
-                    callback(true);
+                    callback(sendStatus);
                 }
                 else{
                     callback(null);
@@ -135,7 +136,7 @@ function getUserSpecificTokens(usersSet,activityid,message,category,callback){
             console.log(fcmTokens);
             sendNotification(fcmTokens,usernotificationData,function(sendStatus){
                 if(sendStatus){
-                    callback(true);
+                    callback(sendStatus);
                 }
                 else{
                     callback(null);
@@ -168,7 +169,7 @@ function getAllFcmToken(category,message,callback){
             console.log(fcmTokens);
             sendNotification(fcmTokens,allUsernotificationData,function(sendStatus){
                 if(sendStatus){
-                    callback(true);
+                    callback(sendStatus);
                 }
                 else{
                     callback(null);
@@ -207,8 +208,15 @@ function sendNotification(registrationTokens , notificationData , callback){
                 console.log(err);
             }
             
+            console.log('The notification response');
             console.log(response);
-            callback(true);
+            var success = response.success;
+            var failure = response.failure;
+            
+            var notificationResponse = {};
+            notificationResponse.success = success;
+            notificationResponse.failure = failure;
+            callback(notificationResponse);
         }); 
     }
 }
