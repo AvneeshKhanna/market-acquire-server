@@ -70,12 +70,15 @@ function getActivityDetails(activityid , editKeys , callback){
         TableName: "ACTIVITY_ID",
         ProjectionExpression: "diff",
         Key: {
-                "ID": activityid,
-            }    
+            "ID": activityid
+        }
     };
     
     docClient.get(params , function(error,data){
-        if(error) throw error;
+        if(error){
+            console.error(error);
+            throw error;
+        }
         
         for(var j=0 ; j<data.Item.diff.length ; j++){
             tablekeys.push(data.Item.diff[j]);

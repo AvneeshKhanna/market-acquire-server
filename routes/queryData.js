@@ -18,16 +18,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 router.post('/' , function(request,response,error){
-    var queryData = request.body.queryData;
-    var scanData = JSON.parse(queryData);
-    var data = scanData.scanData;
+
+    console.log('Request is ' + JSON.stringify(request.body, null, 3));
+
+    var data = request.body.scanData;
     var activityId = data[0].ACTIVITY_ID;
     var scandataFields = data[1].Field;
     
-    var staticKeys = ['UUID','Activity_ID','City','P_EmailID','PromoterName','SaveDate','SaveTime'];
+    var staticKeys = [
+        'UUID',
+        'Activity_ID',
+        'City',
+        'P_EmailID',
+        'PromoterName',
+        'SaveDate',
+        'SaveTime'];
+
     var parentscanParams = {};
     var innerscanParams = {};
-    innerscanParams.ComparisonOperator = 'CONTAINS';
+    innerscanParams.ComparisonOperator = 'EQ';
     innerscanParams.AttributeValueList = [activityId];
     parentscanParams.Activity_ID = innerscanParams;
     
@@ -66,7 +75,7 @@ var getActivityKeys = function(activityid , callback){
         TableName: "ACTIVITY_ID",
         ProjectionExpression: "diff",
         Key: {
-                "ID": activityid,
+                "ID": activityid
         }    
     };
     
@@ -78,7 +87,7 @@ var getActivityKeys = function(activityid , callback){
             callback(getKeysResult.Item.diff);
         }
     });
-}
+};
 
 var scanActivityData = function(activityid , scanParams , totalkeys , callback){
     var scanDataParams = {
@@ -92,8 +101,8 @@ var scanActivityData = function(activityid , scanParams , totalkeys , callback){
     
     function onScan(error,scandata){
         if(error){
+            console.error(error);
             callback(null);
-            console.log(error);
         }
         else{
             console.log("Scan succeeded.");

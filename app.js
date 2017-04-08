@@ -7,10 +7,12 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+var users = require('./routes/manage-users/getUsers');
+var edituser = require('./routes/manage-users/editUser');
 var createForm = require('./routes/createForm');
 var queryData = require('./routes/queryData');
 var notificationSystem = require('./routes/Notification-System/notification');
+var activities = require('./routes/manageActivities');
 //var tester = require('./routes/test');
 
 var app = express();
@@ -32,9 +34,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/edituser', edituser);
 app.use('/createform' , createForm);
 app.use('/querydata' , queryData);
 app.use('/activitynotification',notificationSystem);
+app.use('/activities', activities);
 //app.use('/test' , tester);
 
 // catch 404 and forward to error handler
