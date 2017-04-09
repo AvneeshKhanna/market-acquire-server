@@ -18,12 +18,13 @@ app.use(bodyParser.json());
 
 router.post('/',function(request,response,error){
     //FE will send notification set which will contain the target Audience on the basis of that SE will extract and form the data
-    var dataFromAjax = JSON.parse(request.body.dataToSend);
+    // var dataFromAjax = JSON.parse(request.body.dataToSend);
+    var dataFromAjax = request.body.data;
     var targetAudience = dataFromAjax.targetAudience;
     var notificationMessage = dataFromAjax.notificationData;
     var notificationCategory = dataFromAjax.notificationCategory;
     console.log(notificationCategory);
-    
+
     if(targetAudience == 'activitySpecific'){
         var activitySet = dataFromAjax.notificationSet;
         getActivityFcmTokens(activitySet,notificationMessage,notificationCategory,function(status){
@@ -37,7 +38,7 @@ router.post('/',function(request,response,error){
             }
         });
     }
-    
+
     if(targetAudience == 'userSpecific'){
         var usersSet = dataFromAjax.notificationSet;
         var activityId = dataFromAjax.activityID;
