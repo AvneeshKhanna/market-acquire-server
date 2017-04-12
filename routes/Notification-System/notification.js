@@ -24,6 +24,7 @@ router.post('/', function (request, response, error) {
     var notificationMessage = dataFromAjax.notificationData;
     var notificationCategory = dataFromAjax.notificationCategory;
     console.log(notificationCategory);
+    console.log(dataFromAjax);
 
     if (targetAudience == 'activitySpecific') {
         var activitySet = dataFromAjax.notificationSet;
