@@ -13,10 +13,10 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-router.post('/',function(request,response,error){
+router.post('/', function (request, response, error) {
     //FE will send notification set which will contain the target Audience on the basis of that SE will extract and form the data
     // var dataFromAjax = JSON.parse(request.body.dataToSend);
     var dataFromAjax = request.body.data;
@@ -25,41 +25,41 @@ router.post('/',function(request,response,error){
     var notificationCategory = dataFromAjax.notificationCategory;
     console.log(notificationCategory);
 
-    if(targetAudience == 'activitySpecific'){
+    if (targetAudience == 'activitySpecific') {
         var activitySet = dataFromAjax.notificationSet;
-        getActivityFcmTokens(activitySet,notificationMessage,notificationCategory,function(status){
-            if(status){
+        getActivityFcmTokens(activitySet, notificationMessage, notificationCategory, function (status) {
+            if (status) {
                 response.send(status);
                 response.end();
             }
-            else{
+            else {
                 response.send(false);
                 response.end();
             }
         });
     }
 
-    if(targetAudience == 'userSpecific'){
+    if (targetAudience == 'userSpecific') {
         var usersSet = dataFromAjax.notificationSet;
         var activityId = dataFromAjax.activityID;
-        getUserSpecificTokens(usersSet,activityId,notificationMessage,notificationCategory,function(status){
-            if(status){
+        getUserSpecificTokens(usersSet, activityId, notificationMessage, notificationCategory, function (status) {
+            if (status) {
                 response.send(status);
                 response.end();
             }
-            else{
+            else {
                 response.send(false);
                 response.end();
             }
         });
     }
-    if(targetAudience == 'select'){
-        getAllFcmToken(notificationCategory,notificationMessage,function(status){
-            if(status){
+    if (targetAudience == 'select') {
+        getAllFcmToken(notificationCategory, notificationMessage, function (status) {
+            if (status) {
                 response.send(status);
                 response.end();
             }
-            else{
+            else {
                 response.send(false);
                 response.end();
             }
@@ -67,36 +67,36 @@ router.post('/',function(request,response,error){
     }
 });
 
-function getActivityFcmTokens(activitySet,message,category,callback){
+function getActivityFcmTokens(activitySet, message, category, callback) {
     var activitynotificationData = {
-        Category : category,
-        Message : message
+        Category: category,
+        Message: message
     };
-    
+
     var getTokenParams = {
-        TableName:'UserDetails',
-        AttributesToGet:['Fcm_Token'],
-        ConsistentRead:true,
+        TableName: 'UserDetails',
+        AttributesToGet: ['Fcm_Token'],
+        ConsistentRead: true,
         ScanFilter: {
-            ID: { 
+            ID: {
                 AttributeValueList: activitySet,
                 ComparisonOperator: 'IN'
             },
         },
     };
-    
-    docClient.scan(getTokenParams,function(error,data){
-        if(error){
+
+    docClient.scan(getTokenParams, function (error, data) {
+        if (error) {
             console.log(error);
             callback(null);
         }
-        else{
+        else {
             var fcmTokens = fcmTokenMapping(data.Items);
-            sendNotification(fcmTokens,activitynotificationData,function(sendStatus){
-                if(sendStatus){
+            sendNotification(fcmTokens, activitynotificationData, function (sendStatus) {
+                if (sendStatus) {
                     callback(sendStatus);
                 }
-                else{
+                else {
                     callback(null);
                 }
             });
@@ -104,18 +104,18 @@ function getActivityFcmTokens(activitySet,message,category,callback){
     });
 }
 
-function getUserSpecificTokens(usersSet,activityid,message,category,callback){
-     var usernotificationData = {
-        Category : category,
-        Message : message
+function getUserSpecificTokens(usersSet, activityid, message, category, callback) {
+    var usernotificationData = {
+        Category: category,
+        Message: message
     };
-    
+
     var getTokenParams = {
-        TableName:'UserDetails',
-        AttributesToGet:['Fcm_Token'],
-        ConsistentRead:true,
+        TableName: 'UserDetails',
+        AttributesToGet: ['Fcm_Token'],
+        ConsistentRead: true,
         ScanFilter: {
-            ID: { 
+            ID: {
                 AttributeValueList: [activityid],
                 ComparisonOperator: 'CONTAINS'
             },
@@ -125,54 +125,21 @@ function getUserSpecificTokens(usersSet,activityid,message,category,callback){
             }
         },
     };
-    
-    docClient.scan(getTokenParams,function(error,data){
-        if(error){
-            console.log(error);
-            callback(null);
-        }
-        else{
-            console.log(data);
-            var fcmTokens = fcmTokenMapping(data.Items);
-            console.log(fcmTokens);
-            sendNotification(fcmTokens,usernotificationData,function(sendStatus){
-                if(sendStatus){
-                    callback(sendStatus);
-                }
-                else{
-                    callback(null);
-                }
-            }); 
-        }
-    });
-}
 
-function getAllFcmToken(category,message,callback){
-    var allUsernotificationData = {
-        Category : category,
-        Message : message
-    };
-    
-    var getAllParams = {
-        TableName:'UserDetails',
-        AttributesToGet:['Fcm_Token'],
-        ConsistentRead:true
-    };
-    
-    docClient.scan(getAllParams,function(error,data){
-        if(error){
+    docClient.scan(getTokenParams, function (error, data) {
+        if (error) {
             console.log(error);
             callback(null);
         }
-        else{
+        else {
             console.log(data);
             var fcmTokens = fcmTokenMapping(data.Items);
             console.log(fcmTokens);
-            sendNotification(fcmTokens,allUsernotificationData,function(sendStatus){
-                if(sendStatus){
+            sendNotification(fcmTokens, usernotificationData, function (sendStatus) {
+                if (sendStatus) {
                     callback(sendStatus);
                 }
-                else{
+                else {
                     callback(null);
                 }
             });
@@ -180,45 +147,78 @@ function getAllFcmToken(category,message,callback){
     });
 }
 
-function fcmTokenMapping(serverTokens){
+function getAllFcmToken(category, message, callback) {
+    var allUsernotificationData = {
+        Category: category,
+        Message: message
+    };
+
+    var getAllParams = {
+        TableName: 'UserDetails',
+        AttributesToGet: ['Fcm_Token'],
+        ConsistentRead: true
+    };
+
+    docClient.scan(getAllParams, function (error, data) {
+        if (error) {
+            console.log(error);
+            callback(null);
+        }
+        else {
+            console.log(data);
+            var fcmTokens = fcmTokenMapping(data.Items);
+            console.log(fcmTokens);
+            sendNotification(fcmTokens, allUsernotificationData, function (sendStatus) {
+                if (sendStatus) {
+                    callback(sendStatus);
+                }
+                else {
+                    callback(null);
+                }
+            });
+        }
+    });
+}
+
+function fcmTokenMapping(serverTokens) {
     var serverFcmTokens = [];
-    for(var j=0;j<serverTokens.length;j++){
-        if(serverTokens[j].Fcm_Token !== undefined){
-            serverFcmTokens=serverFcmTokens.concat(serverTokens[j].Fcm_Token);
+    for (var j = 0; j < serverTokens.length; j++) {
+        if (serverTokens[j].Fcm_Token !== undefined) {
+            serverFcmTokens = serverFcmTokens.concat(serverTokens[j].Fcm_Token);
         }
     }
     return serverFcmTokens;
 }
 
-function sendNotification(registrationTokens , notificationData , callback){
+function sendNotification(registrationTokens, notificationData, callback) {
     console.log(notificationData);
-    if(registrationTokens.length == 0){
+    if (registrationTokens.length == 0) {
         callback(null);
     }
-    else{
+    else {
         var message = new gcm.Message();
         var message = new gcm.Message({
-            data : notificationData
+            data: notificationData
         });
 
         var sender = new gcm.Sender('AIzaSyDUbtCYGKI-kLl7oSVQoW_sZqo2VZBFeKQ');
 
-        sender.send(message, { registrationTokens : registrationTokens }, 3 , function (err, response) {
-            if(err){
+        sender.send(message, {registrationTokens: registrationTokens}, 3, function (err, response) {
+            if (err) {
                 callback(null);
                 console.log(err);
             }
-            
+
             console.log('The notification response');
             console.log(response);
             var success = response.success;
             var failure = response.failure;
-            
+
             var notificationResponse = {};
             notificationResponse.success = success;
             notificationResponse.failure = failure;
             callback(notificationResponse);
-        }); 
+        });
     }
 }
 
