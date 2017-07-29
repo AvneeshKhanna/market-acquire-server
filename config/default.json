@@ -1,7 +1,8 @@
 {
-     "dynamoDB" : {
-        "formTable" : "FormData_Test"
-    },
-	"type" : "PRODUCTION"
-	
+  "dynamoDB": {
+    "formTable": "FormData_Test",
+    "users_table": "UserDetails",
+    "activity_table": "ACTIVITY_ID"
+  },
+  "type": "PRODUCTION"
 }

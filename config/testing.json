@@ -1,6 +1,8 @@
 {
-    "dynamoDB" : {
-        "formTable" : "FormData"
-    },
-	"type" : "DEVELOPMENT"
+  "dynamoDB": {
+    "formTable": "FormData",
+    "users_table": "UserDetails",
+    "activity_table": "ACTIVITY_ID"
+  },
+  "type": "DEVELOPMENT"
 }

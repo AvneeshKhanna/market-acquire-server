@@ -13,8 +13,8 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
     IdentityPoolId: 'ap-northeast-1:863bdfec-de0f-4e9f-8749-cf7fd96ea2ff'
 });
 
-var usersTable = 'UserDetails';
-var activityTable = 'ACTIVITY_ID';
+var usersTable = config.get('dynamoDB.users_table');
+var activityTable = config.get('dynamoDB.activity_table');
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
