@@ -7,16 +7,21 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 var RateLimit = require('express-rate-limit');
 
-var index = require('./routes/index');
-var users = require('./routes/manage-users/getUsers');
-var edituser = require('./routes/manage-users/editUser');
-var createForm = require('./routes/createForm');
-var queryData = require('./routes/queryData');
-var notificationSystem = require('./routes/notification-system/notification');
-var activities = require('./routes/manageActivities');
+var appconfig = require('./app.config');
+
+//routes
+var index = require('./routes/Index');
+var users = require('./routes/manage-users/GetUsers');
+var edituser = require('./routes/manage-users/EditUser');
+var createForm = require('./routes/CreateForm');
+var queryData = require('./routes/QueryData');
+var notificationSystem = require('./routes/notification-system/Notification');
+var activities = require('./routes/ManageActivities');
 //var tester = require('./routes/test');
 
 var app = express();
+
+console.log(appconfig.getEnvType() + " version is running");
 
 var limiter = new RateLimit({
     windowMs: 60*1000, // 1 minute

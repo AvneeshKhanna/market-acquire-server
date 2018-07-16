@@ -97,6 +97,8 @@ var hashids = new Hashids('', 0, 'abcdefghijklmnopqrstuvwxyz'); // all lowercase
 console.log(hashids.encode(1, 2, 3)); // mdfphx
 ```
 
+Default alphabet is `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890`.
+
 **Encode hex instead of numbers:**
 
 Useful if you want to encode [Mongo](https://www.mongodb.com/)'s ObjectIds. Note that *there is no limit* on how large of a hex number you can pass (it does not have to be Mongo's ObjectId).
@@ -165,15 +167,10 @@ This code was written with the intent of placing created ids in visible places, 
 
 	c, f, h, i, s, t, u
 
-Support
--------
-
-Have a question? Ping me [@IvanAkimov](http://twitter.com/ivanakimov) or [ivanakimov.com](http://ivanakimov.com)
-
 License
 -------
 
-MIT License. See the `LICENSE` file. You can use Hashids in open source projects and commercial products. Don't break the Internet. Kthxbye.
+MIT License. See the [LICENSE](LICENSE) file. You can use Hashids in open source projects and commercial products. Don't break the Internet. Kthxbye.
 
 [travis-url]: https://travis-ci.org/ivanakimov/hashids.js
 [travis-image]: https://travis-ci.org/ivanakimov/hashids.js.svg

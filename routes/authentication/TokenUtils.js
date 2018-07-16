@@ -3,10 +3,10 @@
  */
 
 var jwt = require('jsonwebtoken');
-var globalconfig = require('../../globalconfig');
+var appconfig = require('../../app.config');
 
 function createToken(key) {
-    return jwt.sign(key, globalconfig.secretkey)
+    return jwt.sign(key, appconfig.secretkey)
 }
 
 module.exports = {
