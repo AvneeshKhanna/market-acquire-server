@@ -23,7 +23,7 @@ var app = express();
 
 console.log(appconfig.getEnvType() + " version is running");
 
-var limiter = new RateLimit({
+const limiter = new RateLimit({
     windowMs: 60*1000, // 1 minute
     max: 25, // limit each IP to 25 requests per windowMs
     delayMs: 0 // disable delaying - full speed until the max limit is reached
@@ -31,7 +31,6 @@ var limiter = new RateLimit({
 
 //apply rate-limit to all requests
 app.use(limiter);
-
 
 app.use(cors());
 app.options('*', cors());
@@ -58,6 +57,12 @@ app.use('/activities', activities);
 app.use('/otp', require('./routes/authentication/otp/OTPManager'));
 app.use('/access-token', require('./routes/authentication/AccessTokenManager'));
 //app.use('/test' , tester);
+
+//data-dashboard
+app.use('/data-load', require('./routes/data-dashboard/loading/DataLoadingManager'));
+app.use('/data-add', require('./routes/data-dashboard/add/DataAddManager'));
+app.use('/data-update', require('./routes/data-dashboard/update/DataUpdateManager'));
+app.use('/data-delete', require('./routes/data-dashboard/delete/DataDeleteManager'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

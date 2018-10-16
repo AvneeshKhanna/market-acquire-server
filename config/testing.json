@@ -1,4 +1,13 @@
 {
+  "rdsDB": {
+    "dbConfig": {
+      "host": "testrdsinstance.cfjbzkm4dzzx.ap-northeast-1.rds.amazonaws.com",
+      "user": "ttrds",
+      "password": "amazonpass2015",
+      "database": "TT.Dev",
+      "port": "3306"
+    }
+  },
   "dynamoDB": {
     "formTable": "FormData",
     "users_table": "UserDetails",
