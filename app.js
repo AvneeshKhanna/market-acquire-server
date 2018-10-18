@@ -63,6 +63,7 @@ app.use('/data-load', require('./routes/data-dashboard/loading/DataLoadingManage
 app.use('/data-add', require('./routes/data-dashboard/add/DataAddManager'));
 app.use('/data-update', require('./routes/data-dashboard/update/DataUpdateManager'));
 app.use('/data-delete', require('./routes/data-dashboard/delete/DataDeleteManager'));
+app.use('/data-download', require('./routes/data-dashboard/download/DataDownloadManager'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

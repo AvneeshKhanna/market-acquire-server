@@ -90,11 +90,26 @@ async function loadBusinessData(connection, lastindexkey, limit, filter) {
             no_filter_condition = false;
 
             switch(key) {
-                case 'name':
-                    where_clauses.push('MATCH(name) AGAINST (' + JSON.stringify(filter[key]) + ' IN BOOLEAN MODE)');
+                case 'businessname':
+                    where_clauses.push('MATCH(businessname) AGAINST (' + JSON.stringify(filter[key]) + ' IN BOOLEAN MODE)');
+                    break;
+                case 'contactpersonname':
+                    where_clauses.push('MATCH(contactpersonname) AGAINST (' + JSON.stringify(filter[key]) + ' IN BOOLEAN MODE)');
+                    break;
+                case 'designation':
+                    where_clauses.push('MATCH(designation) AGAINST (' + JSON.stringify(filter[key]) + ' IN BOOLEAN MODE)');
+                    break;
+                case 'pincode':
+                    where_clauses.push('MATCH(pincode) AGAINST (' + JSON.stringify(filter[key]) + ' IN BOOLEAN MODE)');
                     break;
                 case 'address':
                     where_clauses.push('MATCH(address) AGAINST (' + JSON.stringify(filter[key]) + ' IN BOOLEAN MODE)');
+                    break;
+                case 'phone':
+                    where_clauses.push('MATCH(phone) AGAINST (' + JSON.stringify(filter[key]) + ' IN BOOLEAN MODE)');
+                    break;
+                case 'email':
+                    where_clauses.push('MATCH(email) AGAINST (' + JSON.stringify(filter[key]) + ' IN BOOLEAN MODE)');
                     break;
                 case 'city':
                     where_clauses.push('MATCH(city) AGAINST (' + JSON.stringify(filter[key]) + ' IN BOOLEAN MODE)');

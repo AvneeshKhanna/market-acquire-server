@@ -20,16 +20,20 @@ router.get('/', function (request, response) {
     let limit = config.isProduction() ? 25 : 15;
 
     let filter = {
-        firstname: request.query.firstname ? decodeURIComponent(request.query.firstname) : undefined,
-        lastname: request.query.lastname ? decodeURIComponent(request.query.lastname) : undefined,
-        phone: request.query.phone ? decodeURIComponent(request.query.phone) : undefined,
-        email: request.query.email ? decodeURIComponent(request.query.email) : undefined,
-        city: request.query.city ? decodeURIComponent(request.query.city) : undefined,
-        area: request.query.area ? decodeURIComponent(request.query.area) : undefined,
-        state: request.query.state ? decodeURIComponent(request.query.state) : undefined,
-        industry: request.query.industry ? decodeURIComponent(request.query.industry) : undefined,
-        source: request.query.source ? decodeURIComponent(request.query.source) : undefined,
-        address: request.query.address ? decodeURIComponent(request.query.address) : undefined
+        firstname: request.query.firstname ? decodeURIComponent(request.query.firstname) : undefined,   //A
+        lastname: request.query.lastname ? decodeURIComponent(request.query.lastname) : undefined,  //A
+        businessname: request.query.businessname ? decodeURIComponent(request.query.businessname) : undefined,  //B
+        phone: request.query.phone ? decodeURIComponent(request.query.phone) : undefined,   //A B
+        email: request.query.email ? decodeURIComponent(request.query.email) : undefined,   //A B
+        city: request.query.city ? decodeURIComponent(request.query.city) : undefined,  //A B
+        area: request.query.area ? decodeURIComponent(request.query.area) : undefined,  //A B
+        pincode: request.query.pincode ? decodeURIComponent(request.query.pincode) : undefined,  //B
+        contactpersonname: request.query.contactpersonname ? decodeURIComponent(request.query.contactpersonname) : undefined,  //B
+        designation: request.query.designation ? decodeURIComponent(request.query.designation) : undefined,  //B
+        state: request.query.state ? decodeURIComponent(request.query.state) : undefined,   //A B
+        industry: request.query.industry ? decodeURIComponent(request.query.industry) : undefined,  //A
+        source: request.query.source ? decodeURIComponent(request.query.source) : undefined,    //A
+        address: request.query.address ? decodeURIComponent(request.query.address) : undefined  //A
     };
 
     /*let specialcharregex = /[^@>()+\-*"~<]+/;   //Remove all special characters which can cause a bug in FULL TEXT SEARCH
