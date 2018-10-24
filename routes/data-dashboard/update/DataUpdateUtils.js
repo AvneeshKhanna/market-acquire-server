@@ -4,12 +4,15 @@
 'use-strict';
 
 const consts = require('../../utils/Constants');
+const moment = require('moment');
 
 async function updateData(connection, type, type_id, data) {
     return new Promise((resolve, reject) => {
 
         let sql;
         let params;
+
+        data.lastupdated = moment().utc().format('YYYY-MM-DD HH:mm:ss');
 
         if(type === consts.type_data.APPLICATION){
             sql = 'UPDATE Application SET ? WHERE aid = ?';

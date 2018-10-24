@@ -33,9 +33,6 @@ router.get('/', function (request, response) {
         address: request.query.address ? decodeURIComponent(request.query.address) : undefined  //A
     };
 
-    /*let specialcharregex = /[^@>()+\-*"~<]+/;   //Remove all special characters which can cause a bug in FULL TEXT SEARCH
-    filter = specialcharregex.exec(filter) ? specialcharregex.exec(filter).join("") : "";    // not-null ? array.join("") : ""*/
-
     let connection;
 
     config.getNewConnection()
@@ -57,7 +54,8 @@ router.get('/', function (request, response) {
         .then(filedata => {
             /*
             download() is asynchronous and uses sendFile() internally which will end response automatically on its own.
-            Hence, no need to call response.end() Ref:https://stackoverflow.com/a/33202186/6439132
+            Hence, no need to call response.end()
+            Ref: https://stackoverflow.com/a/33202186/6439132
             */
             response.download(filedata.users_csv_path, filedata.users_csv_file);
             throw new BreakPromiseChainError();
@@ -75,6 +73,44 @@ router.get('/', function (request, response) {
             }
         });
 
+});
+
+router.get('/selected', (request, response) => {
+
+    let type = request.query.type;  //'APPLICATION' or 'BUSINESS'
+    let type_ids = JSON.parse(request.query.type_ids);
+
+    let connection;
+
+    config.getNewConnection()
+        .then(conn => {
+            connection = conn;
+            return datadownloadutils.downloadSelectedData(connection, type, type_ids);
+        })
+        .then(result => {
+            return datadownloadutils.saveDataToFile(result.columns, result.rows);
+        })
+        .then(filedata => {
+            /*
+            download() is asynchronous and uses sendFile() internally which will end response automatically on its own.
+            Hence, no need to call response.end()
+            Ref: https://stackoverflow.com/a/33202186/6439132
+            */
+            response.download(filedata.users_csv_path, filedata.users_csv_file);
+            throw new BreakPromiseChainError();
+        })
+        .catch(function (err) {
+            config.disconnect(connection);
+            if(err instanceof BreakPromiseChainError){
+                //Do nothing
+            }
+            else{
+                console.error(err);
+                response.status(500).send({
+                    message: 'Some error occurred at the server'
+                }).end();
+            }
+        });
 });
 
 module.exports = router;

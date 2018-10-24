@@ -66,7 +66,7 @@ async function loadApplicationData(connection, lastindexkey, limit, filter) {
                 lastindexkey = lastindexkey + rows.length;
 
                 resolve({
-                    requestmore: rows.length < limit,
+                    requestmore: rows.length >= limit,
                     lastindexkey: lastindexkey,
                     items: rows
                 });
@@ -142,7 +142,7 @@ async function loadBusinessData(connection, lastindexkey, limit, filter) {
                 lastindexkey = lastindexkey + rows.length;
 
                 resolve({
-                    requestmore: rows.length < limit,
+                    requestmore: rows.length >= limit,
                     lastindexkey: lastindexkey,
                     items: rows
                 });

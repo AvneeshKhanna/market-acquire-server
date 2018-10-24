@@ -3,6 +3,8 @@
  */
 'use-strict';
 
+const consts = require('../../utils/Constants');
+
 function deleteData(connection, type, type_id) {
     return new Promise((resolve, reject) => {
         let sql;
