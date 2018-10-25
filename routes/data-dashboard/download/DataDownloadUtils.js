@@ -52,6 +52,9 @@ async function downloadApplicationData(connection, filter) {
                 case 'source':
                     where_clauses.push(createWhereClause(key, JSON.stringify(filter[key])));
                     break;
+                case 'served':
+                    where_clauses.push(createWhereClause(key, JSON.stringify(filter[key])));
+                    break;
                 default:
                     throw new Error('Invalid filter key');
             }

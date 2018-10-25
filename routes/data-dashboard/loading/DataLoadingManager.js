@@ -9,7 +9,7 @@ const router = express.Router();
 const config = require('../../../app.config');
 const BreakPromiseChainError = require('../../utils/BreakPromiseChainError');
 
-let dataloadingutils = require('./DataLoadingUtils');
+const dataloadingutils = require('./DataLoadingUtils');
 const consts = require('../../utils/Constants');
 
 router.get('/', function (request, response) {
@@ -33,6 +33,7 @@ router.get('/', function (request, response) {
         state: request.query.state ? decodeURIComponent(request.query.state) : undefined,   //A B
         industry: request.query.industry ? decodeURIComponent(request.query.industry) : undefined,  //A
         source: request.query.source ? decodeURIComponent(request.query.source) : undefined,    //A
+        served: request.query.served ? decodeURIComponent(request.query.served) : undefined,    //A
         address: request.query.address ? decodeURIComponent(request.query.address) : undefined  //A
     };
 

@@ -44,6 +44,9 @@ async function loadApplicationData(connection, lastindexkey, limit, filter) {
                 case 'source':
                     where_clauses.push('MATCH(source) AGAINST (' + JSON.stringify(filter[key]) + ' IN BOOLEAN MODE)');
                     break;
+                case 'served':
+                    where_clauses.push('MATCH(served) AGAINST (' + JSON.stringify(filter[key]) + ' IN BOOLEAN MODE)');
+                    break;
                 default:
                     throw new Error('Invalid filter key');
             }
