@@ -4,8 +4,8 @@
       "host": "testrdsinstance.cfjbzkm4dzzx.ap-northeast-1.rds.amazonaws.com",
       "user": "ttrds",
       "password": "amazonpass2015",
-//      "database": "TT.Prod",  TODO: Uncomment
-      "database": "TT.Dev", //TODO:Comment
+      "database": "TT.Prod",
+//      "database": "TT.Dev",
       "port": "3306"
     }
   },
@@ -14,5 +14,5 @@
     "users_table": "UserDetails",
     "activity_table": "ACTIVITY_ID"
   },
-  "type": "DEVELOPMENT"/*"PRODUCTION"*/ //TODO: Interchange
+  "type": /*"DEVELOPMENT"*/"PRODUCTION"
 }

@@ -17,7 +17,7 @@ router.get('/', function (request, response) {
     let lastindexkey = request.query.lastindexkey ? decodeURIComponent(request.query.lastindexkey) : "";
     let type = request.query.type;  //'APPLICATION' or 'BUSINESS'
 
-    let limit = config.isProduction() ? 25 : 15;
+    let limit = config.isProduction() ? 50 : 15;
 
     let filter = {
         firstname: request.query.firstname ? decodeURIComponent(request.query.firstname) : undefined,   //A
