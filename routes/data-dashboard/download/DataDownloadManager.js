@@ -29,6 +29,7 @@ router.get('/', function (request, response) {
         designation: request.query.designation ? decodeURIComponent(request.query.designation) : undefined,  //B
         state: request.query.state ? decodeURIComponent(request.query.state) : undefined,   //A B
         industry: request.query.industry ? decodeURIComponent(request.query.industry) : undefined,  //A
+        project: request.query.project ? decodeURIComponent(request.query.project) : undefined,  //A B
         source: request.query.source ? decodeURIComponent(request.query.source) : undefined,    //A
         address: request.query.address ? decodeURIComponent(request.query.address) : undefined  //A
     };

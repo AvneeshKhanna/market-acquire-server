@@ -49,6 +49,9 @@ async function downloadApplicationData(connection, filter) {
                 case 'industry':
                     where_clauses.push(createWhereClause(key, JSON.stringify(filter[key])));
                     break;
+                case 'project':
+                    where_clauses.push(createWhereClause(key, JSON.stringify(filter[key])));
+                    break;
                 case 'source':
                     where_clauses.push(createWhereClause(key, JSON.stringify(filter[key])));
                     break;

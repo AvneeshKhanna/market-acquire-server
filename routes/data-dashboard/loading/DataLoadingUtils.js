@@ -41,6 +41,9 @@ async function loadApplicationData(connection, lastindexkey, limit, filter) {
                 case 'industry':
                     where_clauses.push('MATCH(industry) AGAINST (' + JSON.stringify(filter[key]) + ' IN BOOLEAN MODE)');
                     break;
+                case 'project':
+                    where_clauses.push('MATCH(project) AGAINST (' + JSON.stringify(filter[key]) + ' IN BOOLEAN MODE)');
+                    break;
                 case 'source':
                     where_clauses.push('MATCH(source) AGAINST (' + JSON.stringify(filter[key]) + ' IN BOOLEAN MODE)');
                     break;
