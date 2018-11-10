@@ -65,6 +65,9 @@ app.use('/data-update', require('./routes/data-dashboard/update/DataUpdateManage
 app.use('/data-delete', require('./routes/data-dashboard/delete/DataDeleteManager'));
 app.use('/data-download', require('./routes/data-dashboard/download/DataDownloadManager'));
 
+//data-dashboard
+app.use('/tt-web/form-submit', require('./routes/tt-website/form-submit/FormSubmitManager'));
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

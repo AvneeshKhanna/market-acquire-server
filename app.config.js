@@ -5,6 +5,12 @@
 
 const config = require('config');
 const mysql = require('mysql');
+const AWS = require('aws-sdk');
+
+AWS.config.region = 'ap-northeast-1';
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: 'ap-northeast-1:863bdfec-de0f-4e9f-8749-cf7fd96ea2ff'
+});
 
 const dbConfig = config.get('rdsDB.dbConfig');
 
@@ -55,5 +61,6 @@ module.exports = {
     isProduction: isProduction,
     getNewConnection: getNewConnection,
     disconnect: disconnect,
+    AWS: AWS,
     secretkey: '5d852a5a-72c9-4943-a2a9-4ca178dda3bd'
 };
